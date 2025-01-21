@@ -115,6 +115,31 @@ export class MacchineController {
     }
   }
 
+  @Put(':id')
+  @ApiOperation({
+    summary:
+      'Atualizar uma máquina', 
+  })
+  @ApiResponse({
+    status: 200
+  })
+  async updateMacchine(
+    @Body() body: CreateMacchineBody,
+    @Param() { id }: { id: string },
+    @TokenPayload() user: PayloadTokenDTO
+  ) {
+    try {
+      await this.macchineService.updateMacchine(body, id, user)
+    }
+    catch(error) {
+      console.log(error);
+      throw new HttpException(
+        error.message,
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   @Put('delete/:id')
   @ApiOperation({
     summary:

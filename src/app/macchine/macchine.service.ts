@@ -151,6 +151,46 @@ export class MacchineService {
             })
     }
 
+    
+    async updateMacchine(body: CreateMacchineBody, macchineId: string, user: PayloadTokenDTO) {
+        const paramsUpdateMacchine = [
+            macchineId,
+            body.name,
+            body.cep,
+            body.address,
+            body.complement,
+            body.neighborhood,
+            body.city,
+            body.state,
+            body.statusId,
+            user.id
+        ]
+
+        const queryUpdateMacchine = `
+            UPDATE macchines
+            SET "name" = $2,
+            cep = $3,
+            address = $4,
+            complement = $5,
+            neighborhood = $6,
+            city = $7,
+            state = $8,
+            status_id = $9,
+            updated_by = $10,
+            updated_at = now()
+            WHERE id = $1
+        `
+
+        this.conn
+            .query(queryUpdateMacchine, paramsUpdateMacchine)
+            .then((async () => {
+                await this.createMacchineHistory(macchineId, 'UPDATE', user.id);
+            }))
+            .catch((error) => {
+                throw new Error(error)
+            })
+    }
+
     async createMacchineHistory(macchineId: string, type: string, userId: number) {
         const params = [
             macchineId,
