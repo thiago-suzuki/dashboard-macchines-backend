@@ -40,6 +40,7 @@ export class MacchineService {
             on mh.employee_id = e.id
             where m.status_id = $1 and m.deleted_at is null
             group by m.id, s.id
+            order by m.created_at asc
         `
 
         return await this.conn.query(query, params).then((result) => {
