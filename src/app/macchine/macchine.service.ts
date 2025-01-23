@@ -17,7 +17,8 @@ export class MacchineService {
         const params = [statusId]
 
         const query = `
-            select m.id, m."name", m.cep, m.address , m.complement, m.city, m.state,
+            select m.id, m."name", m.cep, m.address, m.complement, m.neighborhood, 
+            m.city, m.state,
             jsonb_build_object(
                 'id', s.id,
                 'name', s."name",
@@ -56,7 +57,8 @@ export class MacchineService {
         }
 
         const query = `
-            select m.id, m."name", m.cep, m.address , m.complement, m.city, m.state,
+            select m.id, m."name", m.cep, m.address, m.complement, m.neighborhood, 
+            m.city, m.state,
             jsonb_build_object(
                 'id', s.id,
                 'name', s."name",
@@ -88,7 +90,7 @@ export class MacchineService {
 
     async getMacchineStatus(): Promise<StatusDTO[]> {
         const query = `
-            SELECT id, name, description, color FROM status
+            SELECT id, name, description, color FROM status ORDER by id asc
         `
         
         return await this.conn.query(query, []).then((result) => {
