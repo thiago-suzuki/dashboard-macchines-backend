@@ -13,7 +13,7 @@ async function bootstrap() {
   useGlobalFilters(app);
   configureSwagger(app)
 
-  const port = 10000
+  const port = process.env.PORT ? Number(process.env.PORT) : 10000
 
   await app.listen(port, () => {
     console.log('Server running on port ' + port)
