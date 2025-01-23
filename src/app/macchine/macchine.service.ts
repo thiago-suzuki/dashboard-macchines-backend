@@ -5,12 +5,14 @@ import { MacchineDTO, StatusDTO } from './dto/response.dto';
 import camelcaseKeys from 'camelcase-keys';
 import { CreateMacchineBody, FilterByNameParams } from './dto/request.dto';
 import { PayloadTokenDTO } from '@/auth/dto/auth.dto';
+import { MachinesGateway } from './macchine.gateway';
 
 
 @Injectable()
 export class MacchineService {
     constructor(
-        @Inject(PG_WRITE_CONNECTION) private conn: Pool
+        @Inject(PG_WRITE_CONNECTION) private conn: Pool,
+        private readonly machinesGateway: MachinesGateway
     ) {}
 
     async getMacchinesByStatus(statusId: number): Promise<MacchineDTO[]> {
@@ -128,6 +130,12 @@ export class MacchineService {
             .catch((error) => {
                 throw new Error(error)
             })
+
+        let macchine = {
+            name: body.name
+        }
+    
+        this.machinesGateway.emitStatusCreate(macchine);
     }
 
     async deleteMacchine(id: string, user: PayloadTokenDTO) {
@@ -152,6 +160,12 @@ export class MacchineService {
             .catch((error) => {
                 throw new Error(error)
             })
+
+        let macchine = {
+            id: id
+        }
+    
+        this.machinesGateway.emitStatusUpdate(macchine);
     }
 
     
@@ -192,6 +206,13 @@ export class MacchineService {
             .catch((error) => {
                 throw new Error(error)
             })
+
+        let macchine = {
+            id: macchineId,
+            name: body.name
+        }
+
+        this.machinesGateway.emitStatusUpdate(macchine);
     }
 
     async createMacchineHistory(macchineId: string, type: string, userId: number) {
