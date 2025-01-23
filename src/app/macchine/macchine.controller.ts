@@ -118,7 +118,7 @@ export class MacchineController {
   @Put(':id')
   @ApiOperation({
     summary:
-      'Atualizar uma máquina', 
+      'Atualizar uma máquina e enviar no Socket', 
   })
   @ApiResponse({
     status: 200
