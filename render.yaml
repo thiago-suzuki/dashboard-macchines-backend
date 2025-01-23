@@ -1,0 +1,11 @@
+# Exported from Render on 2025-01-23T15:04:20Z
+services:
+- type: web
+  name: dashboard-macchines-backend
+  runtime: node
+  repo: https://github.com/thiago-suzuki/dashboard-macchines-backend
+  plan: free
+  region: oregon
+  buildCommand: npm install; npm run build
+  startCommand: npm run start
+version: "1"
